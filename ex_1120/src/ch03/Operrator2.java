@@ -70,7 +70,7 @@ public class Operrator2 {
 		System.out.println(~i1); // -(7+1); // -8
 		
 		int result1 = i1 << 1;
-		System.out.println(result1);
+		System.out.println(result1); // 14
 		
 
 	}
