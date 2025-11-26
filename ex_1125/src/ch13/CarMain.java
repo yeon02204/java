@@ -1,5 +1,8 @@
 package ch13;
 
+import java.util.Random;
+import java.util.Scanner;
+
 public class CarMain {
 
 	public static void main(String[] args) {
@@ -13,5 +16,12 @@ public class CarMain {
 		System.out.println(myCar.model);
 		System.out.println(myCar.color);
 		System.out.println(myCar.maxSpeed);
+		
+		
+		String s = new String("홍길동");
+        
+	    Random r = new Random();
+	      
+	    Scanner sc = new Scanner(System.in);
 	}
 }
