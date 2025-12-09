@@ -15,7 +15,7 @@ import com.korea.layer.dto.ResponseDTO;
 import com.korea.layer.dto.TestDTO;
 
 // url로 요청이 들어오면 메서드가 실행이 되고 결과를 브라우저에게 반환한다
-@RequestMapping("test")
+// @RequestMapping("test")
 @RestController
 public class TestController {
 
@@ -53,20 +53,7 @@ public class TestController {
 	public String testRequestBody(@RequestBody TestDTO testDTO) {
 		return "hello world! ID :" + testDTO.getId() + ", Message :" + testDTO.getMessage();
 	}
-	
-	@GetMapping("/testResponseBody")
-	   public ResponseDTO<String> testResponseBody1() {
-	      List<String> list = new ArrayList<>();
-	      list.add("Hello");
-	      list.add("Nice too meet you");
-	      list.add("l like winter");
-	      //ResponseDTO.builder()가 반환하는 빌더 객체의 타입을 컴파일러가 추론하지 못하는 경우가
-	      //생기기 때문에 명시적으로 타입을 지정한다.
-	      ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
-	      return response;
-	   }
-	      
-
+	   
 
 	@GetMapping("/testResponseBody")
 	public ResponseEntity<?> testResponseBody() {
@@ -82,5 +69,4 @@ public class TestController {
 		// 다만 헤더 HTTP Status를 조작할 수 있다는 점이 다르다
 	}
 
-	// @GetMapping("/test")
 }

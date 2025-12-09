@@ -1,5 +1,7 @@
 package com.korea.layer.dto;
 
+import org.hibernate.transform.AliasToEntityMapResultTransformer;
+
 import com.korea.layer.model.TodoEntity;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +35,16 @@ public class TodoDTO {
 		this.id= entity.getId();
 		this.title = entity.getTitle();
 		this.done = entity.isDone();
+	}
+	// DTO를 Entity타입으로 바꾸는 TodoDTO 메서드
+	public static TodoEntity ToEntity(TodoDTO dto) {
+		
+		return TodoEntity.builder()
+				.id(dto.getId())
+				.title(dto.title)
+				.done(dto.isDone())
+				.build();
+		
 	}
 
 }
