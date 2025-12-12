@@ -2,12 +2,15 @@ package com.korea.layer.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.h2.command.ddl.AlterDomainRename;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +22,13 @@ import com.korea.layer.dto.TodoDTO;
 import com.korea.layer.model.TodoEntity;
 import com.korea.layer.service.TodoService;
 
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/todo")
 @RequiredArgsConstructor
+@CrossOrigin(originPatterns = "*",allowCredentials = "false")
 public class TodoController {
 	// 해야할일 api를 만들것이다
 
@@ -53,7 +58,7 @@ public class TodoController {
 		return ResponseEntity.ok().body(response);
 	}
 
-	@PostMapping
+	@PostMapping("/createTodo")
 	public ResponseEntity<?> createTodo(@RequestBody TodoDTO dto) {
 
 		try {
@@ -73,13 +78,20 @@ public class TodoController {
 
 			List<TodoEntity> entites = service.create(entity);
 
-			List<TodoDTO> dtos = new ArrayList<>();
-
+//			List<TodoDTO> dtos = new ArrayList<>();
+//
+//			
+//
+//			for (TodoEntity e : entites) {
+//				dtos.add(new TodoDTO(e));
+//			}
 			// 리스트 안에 들어있는 TodoEntity를 TodoDTO 타입으로 변경해서 dtos에 넣는다
-
-			for (TodoEntity e : entites) {
-				dtos.add(new TodoDTO(e));
-			}
+			List<TodoDTO> dtos = entites.stream()
+					.map(TodoDTO::new)
+					.collect(Collectors.toList());
+			
+			
+			
 
 			ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
 
@@ -147,7 +159,7 @@ public class TodoController {
 
 		TodoEntity entity = TodoDTO.ToEntity(dto);
 
-		entity.setUserId(tempraryUserId);
+		 entity.setUserId(tempraryUserId);
 
 		List<TodoEntity> entities = service.update(entity);
 
@@ -164,22 +176,20 @@ public class TodoController {
 	}
 	
 	
-	@DeleteMapping
-	public ResponseEntity<?> deleteTodo(@RequestBody TodoDTO dto){
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteTodo(@PathVariable String id){
 		
 		String tempraryUserId = "Temporaray-uesr";
 		
-		TodoEntity entity = TodoDTO.ToEntity(dto);
+		TodoEntity entity = TodoEntity.builder().id(id).userId(tempraryUserId).build();
 
-		entity.setUserId(tempraryUserId);
+		// entity.setUserId(tempraryUserId);
 		
 		List<TodoEntity> entities = service.delete(entity);
 		
-		List<TodoDTO> dtos = new ArrayList<>();
-
-		for (TodoEntity e : entities) {
-			dtos.add(new TodoDTO(e));
-		}
+		List<TodoDTO> dtos = entities.stream()
+				.map(TodoDTO::new)
+				.collect(Collectors.toList());
 
 		ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
 

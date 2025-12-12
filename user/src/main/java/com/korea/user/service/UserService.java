@@ -16,18 +16,33 @@ public class UserService {
 
 	private final UserRepository repository;
 
+	// 생성
 	public UserEntity create(UserEntity entity) {
 		return repository.save(entity);
 
 	}
 
+	// 조회
 	public List<UserEntity> getAllUsers() {
 		return repository.findAll();
 	}
 
-	public UserEntity getUserByEmail(String eamil) {
-
-		return repository.findByEmail(eamil);
+	// 이메일로 찾기
+	public UserEntity getUserByEmail(String email) {
+		return repository.findByEmail(email);
+		
 	}
+	
+	// 삭제
+//	public UserEntity deleteUser(int id) {
+//		if(id == 0) {
+//			return 0;
+//		}
+//		
+//		return repository.deleteById(id);
+//	}
+	
+	
+	// 수정
 
 }

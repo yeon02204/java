@@ -1,9 +1,11 @@
 package com.korea.product.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.korea.product.model.ProductEntity;
 
 import jakarta.persistence.Entity;
@@ -21,30 +23,36 @@ import lombok.NoArgsConstructor;
 @Data
 public class ProductDTO {
 
-	private String id;
-	private String name;
-	private int price;
-	private int stock;
-	private String description;
+	private int productId;
+	private String productName;
+	private int productPrice;
+	private int productStock;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedAt;
+    
 
 	// DTO로 변환
-	public ProductDTO(ProductEntity entity) {
-		this.id = entity.getId();
-		this.name = entity.getName();
-		this.price = entity.getPrice();
-		this.stock = entity.getStock();
-		this.description = entity.getDescription();
-	}
+    public ProductDTO(ProductEntity entity){
+        this.productId = entity.getProductId();
+        this.productName = entity.getProductName();
+        this.productStock = entity.getProductStock();
+        this.productPrice = entity.getProductPrice();
+        this.createdAt = entity.getCreatedAt();
+        this.updatedAt = entity.getUpdatedAt();
+    }
 
 	// entity로 변환
-	public static ProductEntity ToEntity(ProductDTO dto) {
+	public static ProductEntity toEntity(ProductDTO dto) {
 
 		return ProductEntity.builder()
-				.id(dto.getId())
-				.name(dto.getName())
-				.price(dto.getPrice())
-				.stock(dto.getStock())
-				.description(dto.getDescription())
+				.productId(dto.getProductId())
+				.productName(dto.getProductName())
+				.productPrice(dto.getProductPrice())
+				.productStock(dto.getProductStock())
+				.createdAt(dto.getCreatedAt())
+				.updatedAt(dto.getUpdatedAt())
 				.build();
 	}
 

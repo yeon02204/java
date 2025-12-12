@@ -1,5 +1,6 @@
 package com.korea.layer.service;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -154,15 +155,15 @@ public class TodoService {
 
 	public List<TodoEntity> delete(TodoEntity entity) {
 		
-		validate(entity);
-		
-		try {
-		repository.deleteById(entity.getId());
-		}catch (Exception e) {
-			throw new RuntimeException("error deleting entity"+entity);
-		}
+		TodoEntity entitys = repository.findById(entity.getId())
+		        .orElseThrow(() -> new RuntimeException("Todo not found"));
 
-		return retrieve(entity.getUserId());
+		    String userId = entity.getUserId();
+
+		    
+		    repository.deleteById(entity.getId());
+
+		    return retrieve(userId);
 	}
 
 }
